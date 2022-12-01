@@ -1,39 +1,40 @@
-
-name: Node.js CI
+name: build-test
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
-    branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+  push:
+    branches:
+      - main
+      - releases/*
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [14]
-
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '14'
-        cache: 'npm'
-        cache-dependency-path: subdir/package-lock.json
-    - run: npm install
-    - run: npm test
+      - uses: actions/checkout@v3
+      - name: Setup Node 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+      - run: npm install
+      - run: npm test
         
-    - name: test
-      run: npm install
+      - name: test
+        run: npm install
     
-    - name: build
-      run: docker build -latest .
+      - name: build
+        run: docker build -latest .
     
-    - name: container 
-      run: docker run latest
+      - name: container 
+        run: docker run latest
     
         
     
