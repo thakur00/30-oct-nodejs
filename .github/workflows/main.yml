@@ -29,10 +29,11 @@ jobs:
         run: npm install
     
       - name: build
-        run: docker build . 
+        run: docker build . -t myimage:latest
     
       - name: container 
-        run: docker run 724680448f04
+        run: docker run latest
+        
     
         
     
