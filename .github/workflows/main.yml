@@ -32,7 +32,7 @@ jobs:
         run: docker build . 
     
       - name: container 
-        run: docker run 
+        run: docker run 724680448f04
     
         
     
